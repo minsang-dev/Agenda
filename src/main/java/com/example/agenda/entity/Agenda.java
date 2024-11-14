@@ -1,8 +1,10 @@
 package com.example.agenda.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Getter
 @Entity
 @Table(name = "agenda")
 @EntityListeners(AuditingEntityListener.class)
@@ -25,5 +27,23 @@ public class Agenda extends BaseEntity{
     @JoinColumn(name = "author_id")
     private Author author;
 
+    public Agenda() {
+    }
+
+    public Agenda(String userName, String title, String contents) {
+        this.userName = userName;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public void updateAgenda(Author author, String title, String contents) {
+        this.author = author;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
 
 }

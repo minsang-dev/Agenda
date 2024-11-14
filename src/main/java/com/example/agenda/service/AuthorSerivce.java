@@ -73,6 +73,7 @@ public class AuthorSerivce {
     public void DeleteAuthorById(Long id) {
         authorRepository.delete(authorRepository.findByIdOrElseThrow(id));
     }
+
     
     // 비밀번호 변경
     @Transactional

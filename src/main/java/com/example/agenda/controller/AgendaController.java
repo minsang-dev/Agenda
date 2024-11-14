@@ -21,7 +21,7 @@ public class AgendaController {
 
     // 일정 생성
     @PostMapping("/{author_id}")
-    public ResponseEntity<AgendaResponseDto> save(@PathVariable Long author_id, @RequestBody CreateAgendaRequestDto requestDto){
+    public ResponseEntity<AgendaResponseDto> save(@PathVariable Long author_id, @RequestBody CreateAgendaRequestDto requestDto) {
 
         AgendaResponseDto agendaResponseDto =
                 agendaService.save(
@@ -31,7 +31,7 @@ public class AgendaController {
                         requestDto.getContents()
                 );
 
-        return new ResponseEntity<>(agendaResponseDto,HttpStatus.CREATED);
+        return new ResponseEntity<>(agendaResponseDto, HttpStatus.CREATED);
     }
 
     // 전체 일정 조회
@@ -50,14 +50,14 @@ public class AgendaController {
 
     // 일정 수정
     @PutMapping("/{id}")
-    public ResponseEntity<AgendaResponseDto> update(@PathVariable Long id, @RequestBody UpdateAgendaRequestDto requestDto){
+    public ResponseEntity<AgendaResponseDto> update(@PathVariable Long id, @RequestBody UpdateAgendaRequestDto requestDto) {
         AgendaResponseDto updateAgenda = agendaService.update(requestDto);
         return new ResponseEntity<>(updateAgenda, HttpStatus.OK);
     }
 
     // 일정 삭제
     @DeleteMapping("/agendas/{id}")
-    public ResponseEntity<AgendaResponseDto> delete(@PathVariable Long id){
+    public ResponseEntity<AgendaResponseDto> delete(@PathVariable Long id) {
         agendaService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

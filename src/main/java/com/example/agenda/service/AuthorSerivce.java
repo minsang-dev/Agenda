@@ -1,6 +1,7 @@
 package com.example.agenda.service;
 
 import com.example.agenda.dto.AuthorResponseDto;
+import com.example.agenda.dto.LoginRequestDto;
 import com.example.agenda.dto.SignUpResponseDto;
 import com.example.agenda.entity.Author;
 import com.example.agenda.repository.AuthorRepository;
@@ -70,10 +71,9 @@ public class AuthorSerivce {
     }
 
     // id 값 가져와서 삭제
-    public void DeleteAuthorById(Long id) {
+    public void DeleteAuthorResponse(Long id) {
         authorRepository.delete(authorRepository.findByIdOrElseThrow(id));
     }
-
     
     // 비밀번호 변경
     @Transactional
@@ -84,5 +84,9 @@ public class AuthorSerivce {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
         findAuthor.updatePassword(newPassword);
+    }
+
+    public void login(LoginRequestDto requestDto) {
+
     }
 }

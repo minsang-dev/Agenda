@@ -57,7 +57,8 @@ public class AgendaService {
 
         return new AgendaResponseDto(findAgenda.getId(), findAgenda.getUserName(), findAgenda.getTitle(), findAgenda.getContents(), findAgenda.getModifiedAt());
     }
-
+    
+    // 일정 삭제
     public void delete(Long id) {
         agendaRepository.delete (agendaRepository.findByIdOrElseThrow(id));
 

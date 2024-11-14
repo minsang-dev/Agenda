@@ -2,6 +2,8 @@ package com.example.agenda.controller;
 
 import com.example.agenda.dto.*;
 import com.example.agenda.service.AuthorSerivce;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.List;
 public class AuthorController {
 
     private final AuthorSerivce authorSerivce;
+    private HttpServletRequest authorService;
 
     // 회원가입
     @PostMapping("/signup")
@@ -50,14 +53,36 @@ public class AuthorController {
         AuthorResponseDto deleteAuthor = authorSerivce.findAuthorById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
-    // 비밀번호 변경
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePassword(
-            @PathVariable Long id,
-            @RequestBody UpdatePasswordRequestDto requestDto
-    ) {
-        authorSerivce.updatePassword(id, requestDto.getOldPassword(), requestDto.getNewPassword());
+
+    // 로그인
+    @GetMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
+        authorSerivce.login(requestDto);
+
+        return ResponseEntity.ok().body(
+                new LoginResponseDto(
+                        requestDto.getEmail(),
+                        requestDto.getPassword())
+        );
+    }
+
+    // 로그아웃
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    // 비밀번호 변경
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<Void> updatePassword(
+//            @PathVariable Long id,
+//            @RequestBody UpdatePasswordRequestDto requestDto
+//    ) {
+//        authorSerivce.updatePassword(id, requestDto.getOldPassword(), requestDto.getNewPassword());
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }

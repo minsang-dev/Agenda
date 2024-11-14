@@ -1,14 +1,13 @@
 package com.example.agenda.controller;
 
-import com.example.agenda.dto.AuthorResponseDto;
-import com.example.agenda.dto.SignUpRequestDto;
-import com.example.agenda.dto.SignUpResponseDto;
-import com.example.agenda.dto.UpdatePasswordRequestDto;
+import com.example.agenda.dto.*;
 import com.example.agenda.service.AuthorSerivce;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/authors")
@@ -31,14 +30,28 @@ public class AuthorController {
         return new ResponseEntity<>(signUpResponseDto, HttpStatus.CREATED);
     }
 
+    // 전체조회
+    @GetMapping
+    public ResponseEntity<List<AuthorResponseDto>> findAll() {
+        List<AuthorResponseDto> allAuthor = authorSerivce.findAll();
+        return new ResponseEntity<>(allAuthor, HttpStatus.OK);
+    }
+
     // 작성자 정보 조회
     @GetMapping("/{id}")
     public ResponseEntity<AuthorResponseDto> findAuthorById(@PathVariable Long id) {
         AuthorResponseDto authorResponseDto = authorSerivce.findAuthorById(id);
-
         return new ResponseEntity<>(authorResponseDto, HttpStatus.OK);
     }
 
+    // 작성자 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAuthorById(@PathVariable Long id, @RequestBody DeleteAuthorRequestDto requestDto) {
+        AuthorResponseDto deleteAuthor = authorSerivce.findAuthorById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    // 비밀번호 변경
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePassword(
             @PathVariable Long id,

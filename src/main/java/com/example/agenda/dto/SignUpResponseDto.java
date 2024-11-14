@@ -11,16 +11,13 @@ public class SignUpResponseDto {
     private final String userName;
     private final String email;
     LocalDateTime createdAt;
-    LocalDateTime modifiedAt;
 
-    public SignUpResponseDto(Long id, String userName, String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public SignUpResponseDto(Long id, String userName, String email, LocalDateTime createdAt) {
         this.id = id;
         this.userName = userName;
         this.email = email;
 
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
-
 }

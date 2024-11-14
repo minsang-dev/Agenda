@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +19,8 @@ import java.util.Optional;
 public class AuthorSerivce {
 
     private final AuthorRepository authorRepository;
-
+    
+    // 회원가입 메서드
     public SignUpResponseDto signUp(String userName, String password, String email) {
 
         Author author = new Author(userName, password, email);
@@ -27,11 +30,28 @@ public class AuthorSerivce {
                 savedAuthor.getId(),
                 savedAuthor.getUserName(),
                 savedAuthor.getEmail(),
-                savedAuthor.getCreatedAt(),
-                savedAuthor.getModifiedAt()
+                savedAuthor.getCreatedAt()
         );
     }
+    
+    // 전체 조회 메서드
+    public List<AuthorResponseDto> findAll() {
+        List<AuthorResponseDto> authorResponseDtoList = new ArrayList<>();
 
+        List<Author> authorList = authorRepository.findAll();
+        for (Author author : authorList) {
+            AuthorResponseDto authorResponseDto = new AuthorResponseDto(
+                    author.getUserName(),
+                    author.getEmail(),
+                    author.getCreatedAt(),
+                    author.getModifiedAt()
+            );
+            authorResponseDtoList.add(authorResponseDto);
+        }
+        return authorResponseDtoList;
+    }
+    
+    // 특정 조회 메서드
     public AuthorResponseDto findAuthorById(Long id) {
 
         Optional<Author> optionalAuthor = authorRepository.findById(id);
@@ -39,12 +59,22 @@ public class AuthorSerivce {
         if(optionalAuthor.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id : " + id);
         }
-
         Author findAuthor = optionalAuthor.get();
 
-        return new AuthorResponseDto(findAuthor.getUserName(), findAuthor.getEmail(), findAuthor.getCreatedAt(), findAuthor.getModifiedAt());
+        return new AuthorResponseDto(
+                findAuthor.getUserName(), 
+                findAuthor.getEmail(), 
+                findAuthor.getCreatedAt(), 
+                findAuthor.getModifiedAt()
+        );
     }
 
+    // id 값 가져와서 삭제
+    public void DeleteAuthorById(Long id) {
+        authorRepository.delete(authorRepository.findByIdOrElseThrow(id));
+    }
+    
+    // 비밀번호 변경
     @Transactional
     public void updatePassword(Long id, String oldPassword, String newPassword) {
         Author findAuthor = authorRepository.findByIdOrElseThrow(id);
@@ -52,7 +82,6 @@ public class AuthorSerivce {
         if (!findAuthor.getPassword().equals(oldPassword)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
-
         findAuthor.updatePassword(newPassword);
     }
 }

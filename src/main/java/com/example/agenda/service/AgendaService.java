@@ -21,14 +21,14 @@ public class AgendaService {
     // 일정 생성
     public AgendaResponseDto save(Long id, String userName, String title, String contents) {
         Author findAuthor = authorRepository.findByIdOrElseThrow(id);
-        Agenda agenda = new Agenda(userName, title, contents);
+        Agenda agenda = new Agenda(title, contents);
         agenda.setAuthor(findAuthor);
 
         Agenda savedAgenda = agendaRepository.save(agenda);
 
         return new AgendaResponseDto(
                 savedAgenda.getId(),
-                savedAgenda.getUserName(),
+                savedAgenda.getAuthor().getUserName(),
                 savedAgenda.getTitle(),
                 savedAgenda.getContents(),
                 savedAgenda.getCreatedAt()
@@ -50,18 +50,23 @@ public class AgendaService {
     }
 
     // 일정 수정
-    public AgendaResponseDto update(UpdateAgendaRequestDto requestDto) {
-        Agenda findAgenda = agendaRepository.findByIdOrElseThrow(requestDto.getAuthor_id());
-        findAgenda.updateAgenda(findAgenda.getAuthor(), requestDto.getTitle(), requestDto.getContents());
+    public AgendaResponseDto update(Long id, UpdateAgendaRequestDto requestDto) {
+        Agenda findAgenda = agendaRepository.findByIdOrElseThrow(id);
+        findAgenda.updateAgenda(requestDto.getTitle(), requestDto.getContents());
         agendaRepository.save(findAgenda);
 
-        return new AgendaResponseDto(findAgenda.getId(), findAgenda.getUserName(), findAgenda.getTitle(), findAgenda.getContents(), findAgenda.getModifiedAt());
+        return new AgendaResponseDto(
+                findAgenda.getId(),
+                findAgenda.getAuthor().getUserName(),
+                findAgenda.getTitle(),
+                findAgenda.getContents(),
+                findAgenda.getModifiedAt()
+        );
     }
     
     // 일정 삭제
     public void delete(Long id) {
         agendaRepository.delete (agendaRepository.findByIdOrElseThrow(id));
-
     }
 
 }

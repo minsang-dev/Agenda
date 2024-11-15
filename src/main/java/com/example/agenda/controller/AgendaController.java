@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/agendas")
 @RequiredArgsConstructor
 public class AgendaController {
 
     private final AgendaService agendaService;
 
     // 일정 생성
-    @PostMapping("/{author_id}")
-    public ResponseEntity<AgendaResponseDto> save(@PathVariable Long author_id, @RequestBody CreateAgendaRequestDto requestDto) {
+    @PostMapping
+    public ResponseEntity<AgendaResponseDto> save(@RequestBody CreateAgendaRequestDto requestDto) {
 
         AgendaResponseDto agendaResponseDto =
                 agendaService.save(
-                        author_id,
+                        requestDto.getAuthorId(),
                         requestDto.getUserName(),
                         requestDto.getTitle(),
                         requestDto.getContents()
@@ -35,7 +35,7 @@ public class AgendaController {
     }
 
     // 전체 일정 조회
-    @GetMapping("/agendas")
+    @GetMapping
     public ResponseEntity<List<AgendaResponseDto>> findAll() {
         List<AgendaResponseDto> allAgenda = agendaService.findAll();
         return new ResponseEntity<>(allAgenda, HttpStatus.OK);
@@ -51,12 +51,12 @@ public class AgendaController {
     // 일정 수정
     @PutMapping("/{id}")
     public ResponseEntity<AgendaResponseDto> update(@PathVariable Long id, @RequestBody UpdateAgendaRequestDto requestDto) {
-        AgendaResponseDto updateAgenda = agendaService.update(requestDto);
+        AgendaResponseDto updateAgenda = agendaService.update(id, requestDto);
         return new ResponseEntity<>(updateAgenda, HttpStatus.OK);
     }
 
     // 일정 삭제
-    @DeleteMapping("/agendas/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<AgendaResponseDto> delete(@PathVariable Long id) {
         agendaService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -17,7 +17,6 @@ import java.util.List;
 public class AuthorController {
 
     private final AuthorSerivce authorSerivce;
-    private HttpServletRequest authorService;
 
     // 회원가입
     @PostMapping("/signup")
@@ -55,7 +54,7 @@ public class AuthorController {
     }
 
     // 로그인
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
         authorSerivce.login(requestDto);
 

@@ -14,9 +14,6 @@ public class Agenda extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", nullable = false, length = 25)
-    private String userName;
-
     @Column(name = "title", nullable = false, length = 25)
     private String title;
 
@@ -27,17 +24,17 @@ public class Agenda extends BaseEntity{
     @JoinColumn(name = "author_id")
     private Author author;
 
-    public Agenda() {
-    }
 
-    public Agenda(String userName, String title, String contents) {
-        this.userName = userName;
+    public Agenda(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
 
-    public void updateAgenda(Author author, String title, String contents) {
-        this.author = author;
+    public Agenda() {
+
+    }
+
+    public void updateAgenda(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }

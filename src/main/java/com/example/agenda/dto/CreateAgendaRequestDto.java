@@ -1,9 +1,6 @@
 package com.example.agenda.dto;
 
-import com.example.agenda.entity.Author;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 public class CreateAgendaRequestDto {

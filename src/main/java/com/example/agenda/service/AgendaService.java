@@ -31,7 +31,8 @@ public class AgendaService {
                 savedAgenda.getAuthor().getUserName(),
                 savedAgenda.getTitle(),
                 savedAgenda.getContents(),
-                savedAgenda.getCreatedAt()
+                savedAgenda.getCreatedAt(),
+                savedAgenda.getModifiedAt()
         );
     }
     
@@ -60,6 +61,7 @@ public class AgendaService {
                 findAgenda.getAuthor().getUserName(),
                 findAgenda.getTitle(),
                 findAgenda.getContents(),
+                findAgenda.getCreatedAt(),
                 findAgenda.getModifiedAt()
         );
     }

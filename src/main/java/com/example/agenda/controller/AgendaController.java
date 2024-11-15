@@ -3,6 +3,7 @@ package com.example.agenda.controller;
 
 import com.example.agenda.dto.AgendaResponseDto;
 import com.example.agenda.dto.CreateAgendaRequestDto;
+import com.example.agenda.dto.CreateAgendaResponseDto;
 import com.example.agenda.dto.UpdateAgendaRequestDto;
 import com.example.agenda.service.AgendaService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/agendas")
+@RequestMapping("/agendas")
 @RequiredArgsConstructor
 public class AgendaController {
 

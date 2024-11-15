@@ -190,7 +190,7 @@ ex) Fail - 400 BAD REQUEST / 404 NOT FOUND
 </details>
 
 ### ERD
-<img width="277" alt="AgendaERD0" src="https://github.com/user-attachments/assets/04f32317-5f86-48c3-b6ad-313b8a839bd9">
+<img width="283" alt="찐최종" src="https://github.com/user-attachments/assets/ef516e7f-9aa2-44c7-bed2-202636ed4dbd">
 
 
 

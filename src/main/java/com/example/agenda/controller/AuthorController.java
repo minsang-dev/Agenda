@@ -1,6 +1,7 @@
 package com.example.agenda.controller;
 
 import com.example.agenda.dto.*;
+import com.example.agenda.entity.Author;
 import com.example.agenda.service.AuthorSerivce;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +19,7 @@ public class AuthorController {
 
     private final AuthorSerivce authorSerivce;
 
-    // 회원가입
+    // 회원가입 localhost:8080/authors/signup
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto requestDto) {
 
@@ -55,8 +56,9 @@ public class AuthorController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
-        authorSerivce.login(requestDto);
+    public ResponseEntity<LoginResponseDto> login(HttpServletRequest request, @RequestBody LoginRequestDto requestDto) {
+        Author author = authorSerivce.login(requestDto);
+        request.getSession().setAttribute("sessionKey", author.getId());
 
         return ResponseEntity.ok().body(
                 new LoginResponseDto(

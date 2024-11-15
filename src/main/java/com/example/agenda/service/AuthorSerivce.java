@@ -5,6 +5,8 @@ import com.example.agenda.dto.LoginRequestDto;
 import com.example.agenda.dto.SignUpResponseDto;
 import com.example.agenda.entity.Author;
 import com.example.agenda.repository.AuthorRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,7 @@ public class AuthorSerivce {
         List<Author> authorList = authorRepository.findAll();
         for (Author author : authorList) {
             AuthorResponseDto authorResponseDto = new AuthorResponseDto(
+                    author.getId(),
                     author.getUserName(),
                     author.getEmail(),
                     author.getCreatedAt(),
@@ -63,9 +66,10 @@ public class AuthorSerivce {
         Author findAuthor = optionalAuthor.get();
 
         return new AuthorResponseDto(
+                findAuthor.getId(),
                 findAuthor.getUserName(), 
                 findAuthor.getEmail(), 
-                findAuthor.getCreatedAt(), 
+                findAuthor.getCreatedAt(),
                 findAuthor.getModifiedAt()
         );
     }
@@ -73,6 +77,17 @@ public class AuthorSerivce {
     // id 값 가져와서 삭제
     public void DeleteAuthorResponse(Long id) {
         authorRepository.delete(authorRepository.findByIdOrElseThrow(id));
+    }
+
+    // 로그인
+
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+        return "";
     }
     
     // 비밀번호 변경
@@ -86,7 +101,18 @@ public class AuthorSerivce {
         findAuthor.updatePassword(newPassword);
     }
 
-    public void login(LoginRequestDto requestDto) {
+    public Author login(LoginRequestDto requestDto) {
+        Author author = authorRepository.findByEmail(requestDto.getEmail()).orElseThrow(() ->
+                new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "사용자를 찾을 수 없습니다."
+                )
+        );
+
+        if(!author.getPassword().equals(requestDto.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 올바르지 않습니다.");
+        }
+        return author;
 
     }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     // email로 Author 조회
-    Optional<Author> findAuthorByEmail(String email);
+    Optional<Author> findByEmail(String email);
 
     // ID로 Author 조회 -> 존재하지 않으면 예외 발생
     default Author findByIdOrElseThrow(Long id) {
